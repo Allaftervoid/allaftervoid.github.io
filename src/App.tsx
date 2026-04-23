@@ -224,98 +224,6 @@ const Destinations = () => {
   );
 };
 
-const ChatWidget = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [inputValue, setInputValue] = useState('');
-  const [messages, setMessages] = useState([
-    { text: "Good evening. How may I assist your journey across time today?", type: "bot" },
-    { text: "I'm interested in Paris 1889.", type: "user" },
-    { text: "A splendid choice. The World's Fair is particularly vibrant this season. Shall I check cabin availability?", type: "bot" }
-  ]);
-
-  const handleSend = () => {
-    if (!inputValue.trim()) return;
-    const newMessages = [...messages, { text: inputValue, type: 'user' }];
-    setMessages(newMessages);
-    setInputValue('');
-    
-    // Simulate bot response
-    setTimeout(() => {
-      setMessages(prev => [...prev, { 
-        text: "I am consulting the Temporal Records for that inquiry. A Personal Navigator will be with you shortly.", 
-        type: 'bot' 
-      }]);
-    }, 1000);
-  };
-
-  return (
-    <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end">
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: 100, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            className="glass mb-4 w-80 h-96 rounded-2xl gold-border flex flex-col overflow-hidden shadow-2xl"
-          >
-            <div className="bg-gold p-4 flex justify-between items-center bg-gradient-to-r from-gold to-[#B8860B]">
-              <span className="text-black font-bold text-[10px] uppercase tracking-widest flex items-center gap-2">
-                <Hourglass className="w-3 h-3" />
-                Chronos Concierge
-              </span>
-              <button onClick={() => setIsOpen(false)} className="text-black hover:rotate-90 transition-transform duration-300">
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="flex-1 p-4 overflow-y-auto space-y-4 text-xs scrollbar-hide">
-              {messages.map((msg, i) => (
-                <motion.div 
-                  initial={{ opacity: 0, x: msg.type === 'bot' ? -10 : 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  key={i} 
-                  className={`${msg.type === 'bot' ? 'bg-white/5 text-white' : 'bg-gold/10 ml-auto text-gold text-right'} p-3 rounded-xl max-w-[85%] border border-white/5`}
-                >
-                  {msg.text}
-                </motion.div>
-              ))}
-            </div>
-            <div className="p-4 border-t border-white/10 flex gap-2 bg-black/40">
-              <input 
-                type="text" 
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Inquire about an era..." 
-                className="bg-transparent border-none text-[11px] focus:outline-none focus:ring-0 flex-1 text-white placeholder:text-white/20"
-              />
-              <button 
-                onClick={handleSend}
-                className="text-gold hover:scale-110 transition-transform"
-              >
-                <Send className="w-4 h-4" />
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      
-      <motion.button 
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(!isOpen)}
-        className="relative group bg-gold w-14 h-14 rounded-full flex items-center justify-center text-black shadow-2xl overflow-hidden"
-      >
-        <motion.div 
-          animate={{ scale: [1, 1.5, 1], opacity: [0.4, 0, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="absolute inset-0 bg-gold rounded-full"
-        />
-        <MessageSquareText className="relative z-10" />
-      </motion.button>
-    </div>
-  );
-};
-
 const Footer = () => {
   return (
     <footer className="px-12 py-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center bg-black">
@@ -339,7 +247,6 @@ export default function App() {
         <Destinations />
       </main>
       <Footer />
-      <ChatWidget />
     </div>
   );
 }
